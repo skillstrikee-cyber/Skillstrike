@@ -1,0 +1,1569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SkillStrike</title>
+  <meta name="description" content="SkillStrike builds AI tools and ecosystem that help people learn, work, earn, and grow.">
+  
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    /* ==========================================================================
+       1. VARIABLES & RESET
+       ========================================================================== */
+    :root {
+      --bg-primary: #050505;
+      --bg-secondary: #0D1117;
+      --bg-card: rgba(13, 17, 23, 0.7);
+      --accent: #007BFF;
+      --accent-glow: rgba(0, 123, 255, 0.45);
+      --accent-light: #3395FF;
+      --text-white: #FFFFFF;
+      --text-muted: #8B949E;
+      --card-border: rgba(255, 255, 255, 0.08);
+      --card-border-hover: rgba(0, 123, 255, 0.4);
+      --glass-bg: rgba(5, 5, 5, 0.75);
+      --font-main: 'Poppins', sans-serif;
+      --transition-smooth: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      color-scheme: dark;
+    }
+
+    body {
+      background-color: var(--bg-primary);
+      color: var(--text-white);
+      font-family: var(--font-main);
+      overflow-x: hidden;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Radial Cursor Glow Element */
+    #cursor-glow {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 600px;
+      height: 600px;
+      margin-left: -300px;
+      margin-top: -300px;
+      background: radial-gradient(circle, var(--accent-glow) 0%, rgba(0, 123, 255, 0) 70%);
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.25;
+      transition: opacity 0.3s ease;
+      mix-blend-mode: screen;
+    }
+
+    /* Selection */
+    ::selection {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--bg-primary);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1f293d;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--accent);
+    }
+
+    /* Utility Classes */
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .section {
+      padding: 120px 0;
+      position: relative;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      border-radius: 100px;
+      background: rgba(0, 123, 255, 0.1);
+      border: 1px solid rgba(0, 123, 255, 0.3);
+      color: var(--accent-light);
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background-color: var(--accent);
+      box-shadow: 0 0 8px var(--accent);
+      animation: pulseDot 2s infinite;
+    }
+
+    @keyframes pulseDot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.8); }
+    }
+
+    .section-header {
+      text-align: center;
+      max-width: 750px;
+      margin: 0 auto 70px auto;
+    }
+
+    .section-title {
+      font-size: clamp(2.2rem, 4vw, 3rem);
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 16px;
+      letter-spacing: -0.5px;
+    }
+
+    .section-title .gradient-text {
+      background: linear-gradient(135deg, #ffffff 30%, var(--accent-light) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .section-subtitle {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      font-weight: 400;
+    }
+
+    /* Buttons */
+    .btn {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 14px 28px;
+      font-family: var(--font-main);
+      font-size: 0.95rem;
+      font-weight: 600;
+      border-radius: 8px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: var(--transition-smooth);
+      overflow: hidden;
+      border: none;
+      z-index: 1;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+      box-shadow: 0 0 25px var(--accent-glow);
+    }
+
+    .btn-primary:hover {
+      background: #0069d9;
+      box-shadow: 0 0 35px rgba(0, 123, 255, 0.7);
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-white);
+      border: 1px solid var(--card-border);
+      backdrop-filter: blur(10px);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.2);
+      transform: translateY(-2px);
+    }
+
+    /* Glass Cards Base */
+    .glass-card {
+      background: var(--bg-card);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      transition: var(--transition-smooth);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .glass-card:hover {
+      border-color: var(--card-border-hover);
+      box-shadow: 0 10px 30px -10px rgba(0, 123, 255, 0.15);
+      transform: translateY(-4px);
+    }
+
+    /* Scroll Animations (Intersection Observer Targets) */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ==========================================================================
+       2. LOADING SCREEN
+       ========================================================================== */
+    #loader {
+      position: fixed;
+      inset: 0;
+      background: var(--bg-primary);
+      z-index: 10000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.6s ease, visibility 0.6s ease;
+    }
+
+    .loader-content {
+      text-align: center;
+      position: relative;
+    }
+
+    .loader-logo-ring {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      border: 2px solid rgba(0, 123, 255, 0.1);
+      border-top-color: var(--accent);
+      animation: spin 1s infinite linear;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0 20px var(--accent-glow);
+    }
+
+    .loader-text {
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+      margin-top: 20px;
+      background: linear-gradient(135deg, #fff, var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: pulseText 1.5s ease-in-out infinite alternate;
+    }
+
+    @keyframes spin {
+      100% { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+
+    @keyframes pulseText {
+      0% { opacity: 0.4; }
+      100% { opacity: 1; }
+    }
+
+    /* ==========================================================================
+       3. NAVBAR
+       ========================================================================== */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 80px;
+      z-index: 1000;
+      transition: var(--transition-smooth);
+    }
+
+    .navbar.scrolled {
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--card-border);
+      height: 70px;
+    }
+
+    .nav-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 100%;
+    }
+
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--text-white);
+      font-size: 1.4rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+
+    .brand-icon {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, var(--accent), #004085);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 1.1rem;
+      box-shadow: 0 0 15px var(--accent-glow);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-link {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: var(--transition-smooth);
+      position: relative;
+    }
+
+    .nav-link:hover, .nav-link.active {
+      color: var(--text-white);
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--accent);
+      transition: var(--transition-smooth);
+    }
+
+    .nav-link:hover::after, .nav-link.active::after {
+      width: 100%;
+    }
+
+    .mobile-toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--text-white);
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    /* ==========================================================================
+       4. HERO SECTION
+       ========================================================================== */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding-top: 120px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-bg-canvas {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+
+    .hero-gradient-orb {
+      position: absolute;
+      top: 20%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(0,123,255,0.25) 0%, rgba(5,5,5,0) 70%);
+      filter: blur(80px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      max-width: 900px;
+    }
+
+    .hero-title {
+      font-size: clamp(3rem, 6vw, 5rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -1.5px;
+      margin-bottom: 24px;
+    }
+
+    .hero-subtitle {
+      font-size: clamp(1.1rem, 2vw, 1.35rem);
+      color: var(--text-muted);
+      margin-bottom: 40px;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+      font-weight: 400;
+    }
+
+    .hero-cta {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 60px;
+    }
+
+    .scroll-indicator {
+      position: absolute;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      text-decoration: none;
+      transition: var(--transition-smooth);
+    }
+
+    .scroll-indicator:hover {
+      color: var(--accent-light);
+    }
+
+    .scroll-mouse {
+      width: 20px;
+      height: 32px;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      border-radius: 20px;
+      position: relative;
+    }
+
+    .scroll-wheel {
+      width: 4px;
+      height: 6px;
+      background: var(--accent);
+      border-radius: 2px;
+      position: absolute;
+      top: 6px;
+      left: 50%;
+      transform: translateX(-50%);
+      animation: scrollWheel 2s infinite;
+    }
+
+    @keyframes scrollWheel {
+      0% { opacity: 1; transform: translate(-50%, 0); }
+      100% { opacity: 0; transform: translate(-50%, 12px); }
+    }
+
+    /* ==========================================================================
+       5. ABOUT SECTION
+       ========================================================================== */
+    .about-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 24px;
+      margin-top: 50px;
+    }
+
+    .about-card {
+      padding: 36px 28px;
+      text-align: left;
+    }
+
+    .about-icon {
+      width: 56px;
+      height: 56px;
+      background: rgba(0, 123, 255, 0.1);
+      border: 1px solid rgba(0, 123, 255, 0.2);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      color: var(--accent-light);
+      margin-bottom: 24px;
+      transition: var(--transition-smooth);
+    }
+
+    .about-card:hover .about-icon {
+      background: var(--accent);
+      color: #fff;
+      box-shadow: 0 0 20px var(--accent-glow);
+    }
+
+    .about-card h3 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .about-card p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    /* ==========================================================================
+       6. AI ASSISTANT SECTION (SHOWCASE)
+       ========================================================================== */
+    .ai-showcase {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: center;
+      background: linear-gradient(180deg, var(--bg-secondary) 0%, rgba(13,17,23,0.4) 100%);
+      border: 1px solid var(--card-border);
+      border-radius: 24px;
+      padding: 48px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .ai-showcase::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -20%;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .ai-info h3 {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    .ai-info p {
+      color: var(--text-muted);
+      font-size: 1rem;
+      margin-bottom: 28px;
+    }
+
+    .ai-features-list {
+      list-style: none;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 36px;
+    }
+
+    .ai-feature-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--text-white);
+    }
+
+    .ai-feature-item i {
+      color: var(--accent-light);
+      font-size: 0.85rem;
+    }
+
+    .ai-mockup {
+      background: rgba(5, 5, 5, 0.85);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+      position: relative;
+    }
+
+    .mockup-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--card-border);
+      padding-bottom: 12px;
+      margin-bottom: 16px;
+    }
+
+    .mockup-dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .mockup-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.2);
+    }
+
+    .mockup-dot:nth-child(1) { background: #ff5f56; }
+    .mockup-dot:nth-child(2) { background: #ffbd2e; }
+    .mockup-dot:nth-child(3) { background: #27c93f; }
+
+    .mockup-chat {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      font-size: 0.85rem;
+    }
+
+    .chat-msg {
+      padding: 12px 16px;
+      border-radius: 10px;
+      max-width: 85%;
+      line-height: 1.5;
+    }
+
+    .chat-msg.user {
+      background: rgba(255, 255, 255, 0.08);
+      align-self: flex-end;
+      color: var(--text-white);
+    }
+
+    .chat-msg.ai {
+      background: rgba(0, 123, 255, 0.15);
+      border: 1px solid rgba(0, 123, 255, 0.3);
+      align-self: flex-start;
+      color: #fff;
+    }
+
+    /* ==========================================================================
+       7. COURSES SECTION
+       ========================================================================== */
+    .courses-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 28px;
+    }
+
+    .course-card {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 32px;
+      height: 100%;
+    }
+
+    .course-tag {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--accent-light);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .course-title {
+      font-size: 1.35rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .course-desc {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-bottom: 24px;
+      flex-grow: 1;
+    }
+
+    .course-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid var(--card-border);
+      padding-top: 20px;
+      margin-top: auto;
+    }
+
+    .course-price {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--text-white);
+    }
+
+    .course-price span {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+
+    /* ==========================================================================
+       8. SERVICES SECTION
+       ========================================================================== */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 28px;
+    }
+
+    .service-card {
+      padding: 36px;
+      position: relative;
+    }
+
+    .service-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .service-icon {
+      width: 48px;
+      height: 48px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      color: var(--accent-light);
+    }
+
+    .service-card h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+
+    .service-card p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+    /* ==========================================================================
+       9. ROADMAP SECTION
+       ========================================================================== */
+    .roadmap-timeline {
+      position: relative;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .roadmap-timeline::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: 2px;
+      background: linear-gradient(180deg, var(--accent) 0%, rgba(255,255,255,0.05) 100%);
+      transform: translateX(-50%);
+    }
+
+    .roadmap-item {
+      display: flex;
+      justify-content: flex-end;
+      padding-right: 50px;
+      position: relative;
+      margin-bottom: 40px;
+      width: 50%;
+    }
+
+    .roadmap-item:nth-child(even) {
+      align-self: flex-end;
+      justify-content: flex-start;
+      padding-right: 0;
+      padding-left: 50px;
+      margin-left: 50%;
+    }
+
+    .roadmap-dot {
+      position: absolute;
+      top: 20px;
+      right: -8px;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--bg-primary);
+      border: 2px solid var(--accent);
+      box-shadow: 0 0 10px var(--accent-glow);
+      z-index: 2;
+    }
+
+    .roadmap-item:nth-child(even) .roadmap-dot {
+      right: auto;
+      left: -8px;
+    }
+
+    .roadmap-content {
+      padding: 24px;
+      width: 100%;
+    }
+
+    .roadmap-phase {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--accent-light);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .roadmap-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .roadmap-desc {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    /* ==========================================================================
+       10. STATISTICS SECTION
+       ========================================================================== */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 24px;
+      background: rgba(13, 17, 23, 0.4);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 40px;
+      text-align: center;
+    }
+
+    .stat-number {
+      font-size: 2.8rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #fff 30%, var(--accent-light) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 8px;
+    }
+
+    .stat-label {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* ==========================================================================
+       11. CONTACT SECTION
+       ========================================================================== */
+    .contact-card {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 50px;
+      text-align: center;
+      background: linear-gradient(180deg, rgba(13,17,23,0.8) 0%, rgba(5,5,5,0.9) 100%);
+    }
+
+    .social-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 16px;
+      margin-top: 36px;
+    }
+
+    .social-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 16px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--card-border);
+      color: var(--text-white);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: var(--transition-smooth);
+    }
+
+    .social-btn:hover {
+      background: rgba(0, 123, 255, 0.15);
+      border-color: var(--accent);
+      color: var(--accent-light);
+      transform: translateY(-2px);
+    }
+
+    /* ==========================================================================
+       12. FOOTER
+       ========================================================================== */
+    .footer {
+      border-top: 1px solid var(--card-border);
+      padding: 40px 0;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .footer-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .footer-socials {
+      display: flex;
+      gap: 16px;
+    }
+
+    .footer-social-link {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      transition: var(--transition-smooth);
+    }
+
+    .footer-social-link:hover {
+      color: var(--accent-light);
+    }
+
+    /* ==========================================================================
+       13. RESPONSIVE DESIGN
+       ========================================================================== */
+    @media (max-width: 992px) {
+      .ai-showcase {
+        grid-template-columns: 1fr;
+        padding: 32px;
+      }
+
+      .roadmap-timeline::before {
+        left: 20px;
+      }
+
+      .roadmap-item, .roadmap-item:nth-child(even) {
+        width: 100%;
+        padding-left: 50px;
+        padding-right: 0;
+        margin-left: 0;
+      }
+
+      .roadmap-dot, .roadmap-item:nth-child(even) .roadmap-dot {
+        left: 12px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        position: fixed;
+        top: 80px;
+        left: 0;
+        right: 0;
+        background: var(--bg-primary);
+        border-bottom: 1px solid var(--card-border);
+        flex-direction: column;
+        padding: 24px;
+        gap: 20px;
+        transform: translateY(-150%);
+        transition: var(--transition-smooth);
+      }
+
+      .nav-links.open {
+        transform: translateY(0);
+      }
+
+      .mobile-toggle {
+        display: block;
+      }
+
+      .ai-features-list {
+        grid-template-columns: 1fr;
+      }
+
+      .contact-card {
+        padding: 30px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Dynamic Pointer Background Glow -->
+  <div id="cursor-glow"></div>
+
+  <!-- 1. LOADING SCREEN -->
+  <div id="loader">
+    <div class="loader-content">
+      <div class="loader-logo-ring"></div>
+      <div class="loader-text">SKILLSTRIKE</div>
+    </div>
+  </div>
+
+  <!-- 2. NAVBAR -->
+  <nav class="navbar" id="navbar">
+    <div class="container nav-container">
+      <a href="#" class="brand-logo">
+        <div class="brand-icon"><i class="fa-solid fa-bolt"></i></div>
+        SkillStrike
+      </a>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="#hero" class="nav-link active">Home</a></li>
+        <li><a href="#about" class="nav-link">About</a></li>
+        <li><a href="#assistant" class="nav-link">AI Assistant</a></li>
+        <li><a href="#courses" class="nav-link">Courses</a></li>
+        <li><a href="#services" class="nav-link">Services</a></li>
+        <li><a href="#roadmap" class="nav-link">Roadmap</a></li>
+        <li><a href="#contact" class="nav-link">Contact</a></li>
+      </ul>
+      <button class="mobile-toggle" id="mobile-toggle" aria-label="Toggle Navigation">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+    </div>
+  </nav>
+
+  <!-- 3. HERO SECTION -->
+  <section class="hero" id="hero">
+    <canvas id="particles-canvas" class="hero-bg-canvas"></canvas>
+    <div class="hero-gradient-orb"></div>
+    <div class="container hero-content reveal">
+      <div class="badge">
+        <span class="badge-dot"></span>
+        The Future of Artificial Intelligence
+      </div>
+      <h1 class="hero-title">
+        India's Next <br>
+        <span class="gradient-text">AI Platform</span>
+      </h1>
+      <p class="hero-subtitle">
+        SkillStrike builds advanced AI tools and ecosystem designed to empower individuals and businesses to learn, work, earn, and grow.
+      </p>
+      <div class="hero-cta">
+        <a href="#courses" class="btn btn-primary">
+          Explore Courses <i class="fa-solid fa-arrow-right"></i>
+        </a>
+        <a href="#assistant" class="btn btn-secondary">
+          AI Assistant <span style="font-size: 0.75rem; opacity: 0.7; border: 1px solid rgba(255,255,255,0.3); padding: 2px 6px; border-radius: 4px; margin-left: 4px;">SOON</span>
+        </a>
+      </div>
+    </div>
+    <a href="#about" class="scroll-indicator">
+      <div class="scroll-mouse">
+        <div class="scroll-wheel"></div>
+      </div>
+      <span>Scroll</span>
+    </a>
+  </section>
+
+  <!-- 4. ABOUT SECTION -->
+  <section class="section" id="about">
+    <div class="container">
+      <div class="section-header reveal">
+        <div class="badge"><span class="badge-dot"></span> Core Philosophy</div>
+        <h2 class="section-title">Engineered for <span class="gradient-text">Human Advancement</span></h2>
+        <p class="section-subtitle">SkillStrike isn't just an app or an academy. It is a unified AI platform structured around four foundational pillars.</p>
+      </div>
+      <div class="about-grid">
+        <div class="glass-card about-card reveal">
+          <div class="about-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+          <h3>Learn</h3>
+          <p>Master high-impact skills with cutting-edge, AI-curated pathways designed for real-world execution.</p>
+        </div>
+        <div class="glass-card about-card reveal">
+          <div class="about-icon"><i class="fa-solid fa-code"></i></div>
+          <h3>Build</h3>
+          <p>Deploy real AI projects, automation workflows, and software solutions directly on our native stack.</p>
+        </div>
+        <div class="glass-card about-card reveal">
+          <div class="about-icon"><i class="fa-solid fa-chart-line"></i></div>
+          <h3>Earn</h3>
+          <p>Monetize specialized expertise, digital assets, and AI workflows in India's growing digital economy.</p>
+        </div>
+        <div class="glass-card about-card reveal">
+          <div class="about-icon"><i class="fa-solid fa-rocket"></i></div>
+          <h3>Grow</h3>
+          <p>Scale business operations, personal productivity, and digital presence through continuous AI leverage.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. AI ASSISTANT SECTION -->
+  <section class="section" id="assistant">
+    <div class="container">
+      <div class="ai-showcase reveal">
+        <div class="ai-info">
+          <div class="badge"><span class="badge-dot"></span> Next-Gen Intelligence</div>
+          <h3>SkillStrike AI</h3>
+          <p>An omnipresent intelligence agent tailored for modern professionals, creators, and entrepreneurs.</p>
+          <ul class="ai-features-list">
+            <li class="ai-feature-item"><i class="fa-solid fa-check"></i> Daily AI Assistance</li>
+            <li class="ai-feature-item"><i class="fa-solid fa-check"></i> Business Guidance</li>
+            <li class="ai-feature-item"><i class="fa-solid fa-check"></i> Learning Support</li>
+            <li class="ai-feature-item"><i class="fa-solid fa-check"></i> Content Creation</li>
+            <li class="ai-feature-item"><i class="fa-solid fa-check"></i> Enterprise Productivity</li>
+            <li class="ai-feature-item"><i class="fa-solid fa-check"></i> Workflow Automation</li>
+          </ul>
+          <a href="#contact" class="btn btn-primary">Notify Me On Launch</a>
+        </div>
+        <div class="ai-mockup">
+          <div class="mockup-header">
+            <div class="mockup-dots">
+              <span class="mockup-dot"></span>
+              <span class="mockup-dot"></span>
+              <span class="mockup-dot"></span>
+            </div>
+            <span style="font-size: 0.75rem; color: var(--text-muted);">SkillStrike Agent v1.0</span>
+          </div>
+          <div class="mockup-chat">
+            <div class="chat-msg user">Optimize my outreach pipeline and build an automated lead score model.</div>
+            <div class="chat-msg ai">Analyzing workflow... Connected lead pipeline. Automated scoring matrix deployed across active marketing channels.</div>
+            <div class="chat-msg user">What is our predicted growth trajectory for Q3?</div>
+            <div class="chat-msg ai">Based on current retention and AI automation efficiency, growth is projected at +142%.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. COURSES SECTION -->
+  <section class="section" id="courses">
+    <div class="container">
+      <div class="section-header reveal">
+        <div class="badge"><span class="badge-dot"></span> Core Curriculum</div>
+        <h2 class="section-title">Industry-Grade <span class="gradient-text">AI Programs</span></h2>
+        <p class="section-subtitle">Practical, actionable, and futuristic modules to bring you to the forefront of technology.</p>
+      </div>
+      <div class="courses-grid">
+        <div class="glass-card course-card reveal">
+          <div>
+            <span class="course-tag">Foundational</span>
+            <h3 class="course-title">AI Fundamentals</h3>
+            <p class="course-desc">Master neural network basics, prompt engineering, and core AI principles driving the modern era.</p>
+          </div>
+          <div class="course-footer">
+            <div class="course-price">₹4,999 <span>/ Lifetime</span></div>
+            <a href="#contact" class="btn btn-secondary" style="padding: 8px 16px; font-size: 0.85rem;">Learn More</a>
+          </div>
+        </div>
+        <div class="glass-card course-card reveal">
+          <div>
+            <span class="course-tag">Growth</span>
+            <h3 class="course-title">Social Media Marketing</h3>
+            <p class="course-desc">Scale organic reach, engineer viral funnels, and use algorithmic distribution tools.</p>
+          </div>
+          <div class="course-footer">
+            <div class="course-price">₹6,999 <span>/ Lifetime</span></div>
+            <a href="#contact" class="btn btn-secondary" style="padding: 8px 16px; font-size: 0.85rem;">Learn More</a>
+          </div>
+        </div>
+        <div class="glass-card course-card reveal">
+          <div>
+            <span class="course-tag">Acquisition</span>
+            <h3 class="course-title">Lead Generation</h3>
+            <p class="course-desc">Build automated B2B/B2C client acquisition pipelines that run 24/7 on autopilot.</p>
+          </div>
+          <div class="course-footer">
+            <div class="course-price">₹7,999 <span>/ Lifetime</span></div>
+            <a href="#contact" class="btn btn-secondary" style="padding: 8px 16px; font-size: 0.85rem;">Learn More</a>
+          </div>
+        </div>
+        <div class="glass-card course-card reveal">
+          <div>
+            <span class="course-tag">Advanced</span>
+            <h3 class="course-title">AI Automation</h3>
+            <p class="course-desc">Develop custom autonomous agents, Zapier/Make integrations, and API workflow pipelines.</p>
+          </div>
+          <div class="course-footer">
+            <div class="course-price">₹9,999 <span>/ Lifetime</span></div>
+            <a href="#contact" class="btn btn-secondary" style="padding: 8px 16px; font-size: 0.85rem;">Learn More</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. SERVICES SECTION -->
+  <section class="section" id="services">
+    <div class="container">
+      <div class="section-header reveal">
+        <div class="badge"><span class="badge-dot"></span> Agency Solutions</div>
+        <h2 class="section-title">Enterprise <span class="gradient-text">Services</span></h2>
+        <p class="section-subtitle">We design and execute custom digital solutions powered by next-generation technology.</p>
+      </div>
+      <div class="services-grid">
+        <div class="glass-card service-card reveal">
+          <div class="service-header">
+            <div class="service-icon"><i class="fa-solid fa-code"></i></div>
+            <h3>Website Development</h3>
+          </div>
+          <p>Ultra-fast, responsive, and futuristic web experiences optimized for conversion and brand dominance.</p>
+        </div>
+        <div class="glass-card service-card reveal">
+          <div class="service-header">
+            <div class="service-icon"><i class="fa-solid fa-robot"></i></div>
+            <h3>AI Automation</h3>
+          </div>
+          <p>Custom artificial intelligence integration into operational workflows to cut overhead and boost efficiency.</p>
+        </div>
+        <div class="glass-card service-card reveal">
+          <div class="service-header">
+            <div class="service-icon"><i class="fa-solid fa-filter"></i></div>
+            <h3>Lead Generation</h3>
+          </div>
+          <p>High-converting funnel engineering and targeted prospect sourcing designed for rapid revenue growth.</p>
+        </div>
+        <div class="glass-card service-card reveal">
+          <div class="service-header">
+            <div class="service-icon"><i class="fa-solid fa-hashtag"></i></div>
+            <h3>Social Media Management</h3>
+          </div>
+          <p>End-to-end strategy, creative production, and performance tracking across key digital platforms.</p>
+        </div>
+        <div class="glass-card service-card reveal">
+          <div class="service-header">
+            <div class="service-icon"><i class="fa-solid fa-chart-line"></i></div>
+            <h3>Business Growth</h3>
+          </div>
+          <p>Strategic positioning, offer development, and scaling advisory tailored for technology startups.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. ROADMAP SECTION -->
+  <section class="section" id="roadmap">
+    <div class="container">
+      <div class="section-header reveal">
+        <div class="badge"><span class="badge-dot"></span> Vision 2026</div>
+        <h2 class="section-title">Platform <span class="gradient-text">Roadmap</span></h2>
+        <p class="section-subtitle">Our strategic blueprint toward creating India's ultimate AI ecosystem.</p>
+      </div>
+      <div class="roadmap-timeline">
+        <div class="roadmap-item reveal">
+          <div class="roadmap-dot"></div>
+          <div class="glass-card roadmap-content">
+            <span class="roadmap-phase">Phase 01</span>
+            <h3 class="roadmap-title">Courses & Education</h3>
+            <p class="roadmap-desc">Launching foundational AI, lead generation, and growth curriculum.</p>
+          </div>
+        </div>
+        <div class="roadmap-item reveal">
+          <div class="roadmap-dot"></div>
+          <div class="glass-card roadmap-content">
+            <span class="roadmap-phase">Phase 02</span>
+            <h3 class="roadmap-title">SkillStrike AI Assistant</h3>
+            <p class="roadmap-desc">Deploying integrated assistant interface for creators and business operators.</p>
+          </div>
+        </div>
+        <div class="roadmap-item reveal">
+          <div class="roadmap-dot"></div>
+          <div class="glass-card roadmap-content">
+            <span class="roadmap-phase">Phase 03</span>
+            <h3 class="roadmap-title">Creator & Developer Hub</h3>
+            <p class="roadmap-desc">Fostering a network of builders, engineers, and digital entrepreneurs.</p>
+          </div>
+        </div>
+        <div class="roadmap-item reveal">
+          <div class="roadmap-dot"></div>
+          <div class="glass-card roadmap-content">
+            <span class="roadmap-phase">Phase 04</span>
+            <h3 class="roadmap-title">Tools Marketplace</h3>
+            <p class="roadmap-desc">Opening an open exchange for custom AI agents, prompts, and automations.</p>
+          </div>
+        </div>
+        <div class="roadmap-item reveal">
+          <div class="roadmap-dot"></div>
+          <div class="glass-card roadmap-content">
+            <span class="roadmap-phase">Phase 05</span>
+            <h3 class="roadmap-title">Native Mobile Application</h3>
+            <p class="roadmap-desc">Releasing iOS and Android mobile ecosystems for instant AI execution on the go.</p>
+          </div>
+        </div>
+        <div class="roadmap-item reveal">
+          <div class="roadmap-dot"></div>
+          <div class="glass-card roadmap-content">
+            <span class="roadmap-phase">Phase 06</span>
+            <h3 class="roadmap-title">Enterprise AI Engine</h3>
+            <p class="roadmap-desc">Deploying scalable AI agent infrastructures for global corporations.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. STATISTICS SECTION -->
+  <section class="section">
+    <div class="container">
+      <div class="stats-grid reveal">
+        <div>
+          <div class="stat-number" data-target="15000">0</div>
+          <div class="stat-label">Active Users</div>
+        </div>
+        <div>
+          <div class="stat-number" data-target="12">0</div>
+          <div class="stat-label">AI Modules</div>
+        </div>
+        <div>
+          <div class="stat-number" data-target="450">0</div>
+          <div class="stat-label">Projects Built</div>
+        </div>
+        <div>
+          <div class="stat-number" data-target="250000">0</div>
+          <div class="stat-label">AI Requests / Day</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10. CONTACT SECTION -->
+  <section class="section" id="contact">
+    <div class="container">
+      <div class="glass-card contact-card reveal">
+        <div class="badge"><span class="badge-dot"></span> Connect With Us</div>
+        <h2 class="section-title">Ready to <span class="gradient-text">Shape the Future?</span></h2>
+        <p class="section-subtitle">Join the SkillStrike network today and leverage artificial intelligence for your growth.</p>
+        <div class="social-grid">
+          <a href="https://wa.me/8882728942" target="_8882728942" rel="noopener" class="social-btn">
+            <i class="fa-brands fa-whatsapp"></i> WhatsApp
+          </a>
+          <a href="https://instagram.com/skill.strike" target="_blank" rel="noopener" class="social-btn">
+            <i class="fa-brands fa-instagram"></i> Instagram
+          </a>
+        
+          <a href="mailto:skillstrikee@gmail.com" class="social-btn">
+            <i class="fa-regular fa-envelope"></i> Email
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11. FOOTER -->
+  <footer class="footer">
+    <div class="container footer-container">
+      <a href="#" class="brand-logo" style="font-size: 1.1rem;">
+        <div class="brand-icon" style="width: 28px; height: 28px; font-size: 0.9rem;"><i class="fa-solid fa-bolt"></i></div>
+        SkillStrike
+      </a>
+      <div>
+        &copy; 2026 SkillStrike AI Platform. All rights reserved.
+      </div>
+      <div class="footer-socials">
+        <a href="#" class="footer-social-link" aria-label="Twitter"><i class="fa-brands fa-x-twitter"></i></a>
+        <a href="#" class="footer-social-link" aria-label="Github"><i class="fa-brands fa-github"></i></a>
+        <a href="#" class="footer-social-link" aria-label="Discord"><i class="fa-brands fa-discord"></i></a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==========================================================================
+     VANILLA JAVASCRIPT LOGIC
+     ========================================================================== -->
+  <script>
+    // 1. Loading Screen Handler
+    window.addEventListener('load', () => {
+      const loader = document.getElementById('loader');
+      setTimeout(() => {
+        loader.style.opacity = '0';
+        loader.style.visibility = 'hidden';
+      }, 500);
+    });
+
+    // 2. Cursor Radial Glow Tracking
+    const cursorGlow = document.getElementById('cursor-glow');
+    document.addEventListener('mousemove', (e) => {
+      cursorGlow.style.left = `${e.clientX}px`;
+      cursorGlow.style.top = `${e.clientY}px`;
+    });
+
+    // 3. Navbar Sticky Effect & Mobile Menu Toggle
+    const navbar = document.getElementById('navbar');
+    const mobileToggle = document.getElementById('mobile-toggle');
+    const navLinks = document.getElementById('nav-links');
+
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    });
+
+    mobileToggle.addEventListener('click', () => {
+      navLinks.classList.toggle('open');
+      const icon = mobileToggle.querySelector('i');
+      if (navLinks.classList.contains('open')) {
+        icon.classList.remove('fa-bars');
+        icon.classList.add('fa-xmark');
+      } else {
+        icon.classList.remove('fa-xmark');
+        icon.classList.add('fa-bars');
+      }
+    });
+
+    // Close menu on link click
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', () => {
+        navLinks.classList.remove('open');
+        const icon = mobileToggle.querySelector('i');
+        if (icon) {
+          icon.classList.remove('fa-xmark');
+          icon.classList.add('fa-bars');
+        }
+      });
+    });
+
+    // 4. Hero Background Interactive Canvas (Particles + Gradient Nodes)
+    const canvas = document.getElementById('particles-canvas');
+    const ctx = canvas.getContext('2d');
+    let width, height;
+    let particles = [];
+
+    function resizeCanvas() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    }
+
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    class Particle {
+      constructor() {
+        this.x = Math.random() * width;
+        this.y = Math.random() * height;
+        this.vx = (Math.random() - 0.5) * 0.5;
+        this.vy = (Math.random() - 0.5) * 0.5;
+        this.radius = Math.random() * 1.5 + 0.5;
+        this.alpha = Math.random() * 0.5 + 0.2;
+      }
+
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+
+        if (this.x < 0) this.x = width;
+        if (this.x > width) this.x = 0;
+        if (this.y < 0) this.y = height;
+        if (this.y > height) this.y = 0;
+      }
+
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(0, 123, 255, ${this.alpha})`;
+        ctx.fill();
+      }
+    }
+
+    function initParticles() {
+      particles = [];
+      const count = Math.floor(width / 15);
+      for (let i = 0; i < count; i++) {
+        particles.push(new Particle());
+      }
+    }
+    initParticles();
+
+    function animateParticles() {
+      ctx.clearRect(0, 0, width, height);
+
+      // Connect particles with distance check
+      for (let i = 0; i < particles.length; i++) {
+        particles[i].update();
+        particles[i].draw();
+
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+
+          if (dist < 120) {
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.strokeStyle = `rgba(0, 123, 255, ${0.15 * (1 - dist / 120)})`;
+            ctx.lineWidth = 0.5;
+            ctx.stroke();
+          }
+        }
+      }
+
+      requestAnimationFrame(animateParticles);
+    }
+    animateParticles();
+
+    // 5. Scroll Intersection Observer for Reveal Elements
+    const revealElements = document.querySelectorAll('.reveal');
+
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+        }
+      });
+    }, { threshold: 0.15 });
+
+    revealElements.forEach(el => revealObserver.observe(el));
+
+    // 6. Statistics Counter Animation
+    const statsSection = document.querySelector('.stats-grid');
+    const statNumbers = document.querySelectorAll('.stat-number');
+    let counted = false;
+
+    const statsObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && !counted) {
+          counted = true;
+          statNumbers.forEach(num => {
+            const target = +num.getAttribute('data-target');
+            let count = 0;
+            const speed = target / 50;
+
+            const updateCount = () => {
+              count += speed;
+              if (count < target) {
+                num.innerText = Math.ceil(count).toLocaleString() + '+';
+                setTimeout(updateCount, 30);
+              } else {
+                num.innerText = target.toLocaleString() + '+';
+              }
+            };
+            updateCount();
+          });
+        }
+      });
+    }, { threshold: 0.5 });
+
+    if (statsSection) {
+      statsObserver.observe(statsSection);
+    }
+  </script>
+</body>
+</html>
