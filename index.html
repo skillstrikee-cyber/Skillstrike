@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SkillStrike</title>
-   <link rel="icon" href="https://skillstrike.online/path-to-your-favicon.png" sizes="512x512" type="confirmlogo2.png">
   <meta name="description" content="SkillStrike builds AI tools and ecosystem that help people learn, work, earn, and grow.">
   
   <!-- Fonts & Icons -->
@@ -1012,6 +1011,241 @@
         padding: 30px 20px;
       }
     }
+
+    /* ==========================================================================
+   SUCCESSFUL COLLABORATION - SKILLSTRIKE × AISENSY
+   ========================================================================== */
+
+.collaboration-section {
+  padding-top: 90px;
+  padding-bottom: 110px;
+  position: relative;
+  overflow: hidden;
+}
+
+.collaboration-section::before {
+  content: "";
+  position: absolute;
+  width: 700px;
+  height: 400px;
+  left: 50%;
+  top: 45%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(
+    ellipse,
+    rgba(0, 123, 255, 0.12) 0%,
+    rgba(0, 123, 255, 0.04) 35%,
+    transparent 70%
+  );
+  filter: blur(50px);
+  pointer-events: none;
+}
+
+.collab-card {
+  max-width: 1050px;
+  margin: 0 auto;
+  padding: 55px 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 45px;
+  position: relative;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(13, 17, 23, 0.95),
+      rgba(5, 5, 5, 0.92)
+    );
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  box-shadow:
+    0 25px 70px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.collab-card::before {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  border-radius: 23px;
+  background: linear-gradient(
+    120deg,
+    transparent 20%,
+    rgba(0, 123, 255, 0.08),
+    transparent 80%
+  );
+  pointer-events: none;
+}
+
+.collab-logo {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 300px;
+  height: 150px;
+  transition: all 0.4s ease;
+}
+
+.collab-logo:hover {
+  transform: scale(1.05);
+}
+
+.collab-logo.skillstrike-logo img {
+  width: 270px;
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+  filter:
+    drop-shadow(0 0 15px rgba(0, 123, 255, 0.35))
+    drop-shadow(0 0 35px rgba(0, 123, 255, 0.12));
+}
+
+.collab-logo.aisensy-logo img {
+  width: 310px;
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+  filter:
+    drop-shadow(0 0 15px rgba(72, 193, 99, 0.25))
+    drop-shadow(0 0 35px rgba(72, 193, 99, 0.08));
+}
+
+.collab-x {
+  width: 58px;
+  height: 58px;
+  min-width: 58px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(0, 123, 255, 0.08);
+  border: 1px solid rgba(0, 123, 255, 0.35);
+
+  color: #3395ff;
+  font-size: 2rem;
+  font-weight: 300;
+
+  box-shadow:
+    0 0 20px rgba(0, 123, 255, 0.2),
+    inset 0 0 20px rgba(0, 123, 255, 0.05);
+
+  position: relative;
+  z-index: 3;
+}
+
+.collab-info {
+  text-align: center;
+  margin-top: 35px;
+  position: relative;
+  z-index: 2;
+}
+
+.collab-success {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #4ade80;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.collab-success i {
+  font-size: 0.7rem;
+  filter: drop-shadow(0 0 6px rgba(74, 222, 128, 0.7));
+}
+
+.collab-info h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.collab-info p {
+  max-width: 680px;
+  margin: 0 auto;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+
+.collab-divider {
+  width: 100px;
+  height: 2px;
+  margin: 22px auto 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--accent),
+    transparent
+  );
+  box-shadow: 0 0 12px rgba(0, 123, 255, 0.4);
+}
+
+/* Collaboration animation */
+.collab-card {
+  animation: collaborationFloat 6s ease-in-out infinite;
+}
+
+@keyframes collaborationFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+
+  .collaboration-section {
+    padding-top: 70px;
+    padding-bottom: 80px;
+  }
+
+  .collab-card {
+    flex-direction: column;
+    gap: 20px;
+    padding: 40px 20px;
+  }
+
+  .collab-logo {
+    min-width: 0;
+    width: 100%;
+    height: auto;
+    min-height: 100px;
+  }
+
+  .collab-logo.skillstrike-logo img {
+    width: 240px;
+  }
+
+  .collab-logo.aisensy-logo img {
+    width: 270px;
+  }
+
+  .collab-x {
+    width: 50px;
+    height: 50px;
+    min-width: 50px;
+    font-size: 1.7rem;
+  }
+
+  .collab-info h3 {
+    font-size: 1.25rem;
+  }
+
+  .collab-info p {
+    font-size: 0.88rem;
+  }
+}
   </style>
 </head>
 <body>
@@ -1365,6 +1599,90 @@
       </div>
     </div>
   </section>
+
+  <!-- 11. SUCCESSFUL COLLABORATION -->
+<section class="section collaboration-section" id="collaboration">
+
+  <div class="container">
+
+    <div class="section-header reveal">
+
+      <div class="badge">
+        <span class="badge-dot"></span>
+        Strategic Collaboration
+      </div>
+
+      <h2 class="section-title">
+        Building Success <span class="gradient-text">Together</span>
+      </h2>
+
+      <p class="section-subtitle">
+        SkillStrike and AiSensy collaborate to empower businesses
+        with smarter digital communication, automation and growth.
+      </p>
+
+    </div>
+
+
+    <!-- Collaboration Card -->
+    <div class="collab-card reveal">
+
+      <!-- SkillStrike Logo -->
+      <div class="collab-logo skillstrike-logo">
+        <img
+          src="skillstrike-logo-transparent.png"
+          alt="SkillStrike Logo"
+        >
+      </div>
+
+
+      <!-- X -->
+      <div class="collab-x" aria-label="Collaboration">
+        ×
+      </div>
+
+
+      <!-- AiSensy Logo -->
+      <div class="collab-logo aisensy-logo">
+        <img
+          src="aisensy-logo-dark-transparent.png"
+          alt="AiSensy Logo"
+        >
+      </div>
+
+    </div>
+
+
+    <!-- Success Message -->
+    <div class="collab-info reveal">
+
+      <div class="collab-success">
+        <i class="fa-solid fa-circle-check"></i>
+        Successful Collaboration
+      </div>
+
+      <h3>
+        SkillStrike × AiSensy
+      </h3>
+
+      <p>
+        A powerful collaboration focused on combining SkillStrike's
+        digital growth ecosystem with AiSensy's WhatsApp automation
+        capabilities to create smarter customer engagement and
+        business growth experiences.
+      </p>
+
+      <div class="collab-divider"></div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- 12. FOOTER -->
+<footer class="footer">
 
   <!-- 11. FOOTER -->
   <footer class="footer">
